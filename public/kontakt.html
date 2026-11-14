@@ -30,7 +30,7 @@
     try{
       var response=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:AbortSignal.timeout(15000)});
       if(!response.ok)throw new Error('request');
-      form.reset();requestId=null;status.textContent='Vielen Dank! Ihre Nachricht ist bei uns eingegangen. Wir antworten Ihnen per E-Mail.';
+      form.reset();requestId=null;window.location.assign('/kontakt-erfolgreich.html');
     }catch(error){status.dataset.error='true';status.textContent='Ihre Nachricht konnte nicht bestätigt werden. Bitte versuchen Sie es erneut oder schreiben Sie an kontakt@hopeberries.de. Ihre Eingaben bleiben für einen erneuten Versuch erhalten.'}
     finally{button.disabled=false}
   });
