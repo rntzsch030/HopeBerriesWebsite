@@ -22,7 +22,8 @@ test('API validation and Supabase boundary', async (t) => {
   delete process.env.SUPABASE_URL; delete process.env.SUPABASE_SECRET_KEY;
   assert.equal((await run(request({email:'a@b.de',consent:true}))).code,503);
   process.env.SUPABASE_URL='https://example.supabase.co';process.env.SUPABASE_SECRET_KEY='sb_secret_test';
-  const body={email:' A@B.DE ',consent:true,finder:'sensitive',audience:'sensitive'};
+  assert.equal((await run(request({email:'a@b.de',consent:true,finder:'sensitive'}))).code,400);
+  const body={email:' A@B.DE ',consent:true};
   for(let i=0;i<2;i++)assert.equal((await run(request(body))).code,200);
   assert.deepEqual(JSON.parse(calls[0][1].body),{email:'a@b.de',consent_version:'launch-2026-11-14'});
   assert.match(calls[0][1].headers.Prefer,/ignore-duplicates/);

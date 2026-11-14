@@ -5,9 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>HopeBerries – Alles für den Alltag mit Krebs</title>
 <meta name="description" content="Ernährung, Supplements, Pflege, Hilfsmittel und rezeptfreie Arzneimittel für Menschen mit Krebs. Sortiert nach Beschwerden, fachlich geprüft. Start im April 2027.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 :root{
   --paper:#F5F6F2;--surface:#FFFFFF;--ink:#1D2A25;--muted:#5C6B64;--line:#DCE3DE;
@@ -431,7 +429,7 @@ form .btn{width:100%}
       </ol></div>
     </div>
     <div class="phone-stage rv d1">
-      <div class="phone"><div class="screen"><div class="finder" id="finder" aria-live="polite"></div></div></div>
+      <div class="phone"><div class="screen"><iframe id="finderFrame" title="HopeBerries Finder – lokale Verarbeitung" src="finder.html" sandbox="allow-scripts" referrerpolicy="no-referrer" style="display:block;width:100%;height:100%;border:0" allow="camera 'none'; microphone 'none'; geolocation 'none'"></iframe></div></div>
       <p class="try"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 9V4.5a1.5 1.5 0 013 0V9m0-1.5a1.5 1.5 0 013 0V10m0-1a1.5 1.5 0 013 0v3.5a5 5 0 01-5 5h-1.2a5 5 0 01-4-2L4 12.5a1.4 1.4 0 012.1-1.8L8 12.5"/></svg>Interaktive Demo: tippen Sie auf eine Antwort</p>
     </div>
   </div>
@@ -550,8 +548,6 @@ form .btn{width:100%}
         <p class="lead">Wir schreiben Ihnen eine E-Mail, sobald HopeBerries öffnet. Nur diese eine, kein Newsletter.</p>
       </div>
       <form id="suForm" novalidate>
-        <div class="picked" id="picked"><b>Ihre Auswahl im Finder</b><div class="f-chips" id="pickedChips"></div></div>
-        <input type="hidden" name="finder" id="finderVal">
         <fieldset>
           <legend>Ich bin …</legend>
           <div class="seg" id="seg">
@@ -623,57 +619,13 @@ tips.forEach(function(t,i){
 document.getElementById('tipClose').onclick=function(){dlg.close()};
 dlg.addEventListener('click',function(e){if(e.target===dlg)dlg.close()});
 
-/* finder demo */
-var NEEDS={'Wenig Appetit':'Kleine Portionen mit viel Energie und Eiweiß','Übelkeit':'Milder Geschmack, wenig Eigengeruch','Geschmack verändert':'Neutrale oder frische Geschmacksrichtungen','Schlucken fällt schwer':'Weiche, cremige Konsistenz','Trockener Mund':'Feuchtigkeitsspendende Mundpflege','Gereizte Haut':'Milde, parfümfreie Hautpflege'};
-var Q=[{t:'Was ist gerade schwierig?',s:'Mehrere Antworten möglich.',o:Object.keys(NEEDS),multi:true,k:'needs'},
-{t:'Für wen suchen Sie?',s:'Eine Antwort wählen.',o:['Für mich','Für einen Angehörigen'],k:'who'},
-{t:'In welcher Phase?',s:'Eine Antwort wählen.',o:['In Therapie','Nach der Therapie','Weiß ich nicht'],k:'phase'}];
-var st={step:0,needs:[],who:null,phase:null},fEl=document.getElementById('finder');
-function bar(p){return '<div class="f-bar"><i style="width:'+p+'%"></i></div>'}
-function render(){
-  var h;
-  if(st.step<3){
-    var q=Q[st.step],sel=function(o){return q.multi?st.needs.indexOf(o)>=0:st[q.k]===o},ok=q.multi?st.needs.length>0:!!st[q.k];
-    h='<div class="f-top"><span>HopeBerries Finder</span><span>Frage '+(st.step+1)+' von 3</span></div>'+bar((st.step+1)/3*100)
-     +'<h4>'+q.t+'</h4><p class="s">'+q.s+'</p><div class="f-opts'+(q.multi?'':' one')+'">'
-     +q.o.map(function(o,i){return '<button type="button" class="f-opt" data-i="'+i+'" aria-pressed="'+sel(o)+'">'+esc(o)+'</button>'}).join('')
-     +'</div><div class="f-nav">'+(st.step>0?'<button type="button" class="f-back">Zurück</button>':'')
-     +'<button type="button" class="f-next" '+(ok?'':'disabled')+'>'+(st.step===2?'Ergebnis zeigen':'Weiter')+'</button></div>';
-  }else{
-    var props=st.needs.map(function(n){return NEEDS[n]});
-    if(st.phase==='In Therapie')props.push('Nur Produkte ohne bekannte Wechselwirkungen');
-    h='<div class="f-top"><span>Ihr Ergebnis</span><span>Fertig</span></div>'+bar(100)
-     +'<h4>Darauf achten wir für Sie</h4><div class="f-chips">'+st.needs.concat([st.who,st.phase]).map(function(c){return '<span>'+esc(c)+'</span>'}).join('')+'</div>'
-     +'<ul class="f-props">'+props.slice(0,4).map(function(p){return '<li>'+esc(p)+'</li>'}).join('')+'</ul>'
-     +'<p class="s">Passende Produkte gibt es ab April 2027.</p>'
-     +'<div class="f-nav"><button type="button" class="f-back" data-restart>Neu starten</button><button type="button" class="f-next go" id="fGo">Vormerken</button></div>';
-  }
-  fEl.innerHTML=h;
-  if(!reduce){fEl.style.animation='none';void fEl.offsetWidth;fEl.style.animation=''}
-  if(st.step<3){
-    var q=Q[st.step];
-    fEl.querySelectorAll('.f-opt').forEach(function(b){b.onclick=function(){
-      var o=q.o[+b.dataset.i];
-      if(q.multi){var k=st.needs.indexOf(o);k>=0?st.needs.splice(k,1):st.needs.push(o)}else st[q.k]=o;
-      render();var again=fEl.querySelector('.f-opt[data-i="'+b.dataset.i+'"]');if(again)again.focus();
-    }});
-    var bk=fEl.querySelector('.f-back');if(bk)bk.onclick=function(){st.step--;render()};
-    fEl.querySelector('.f-next').onclick=function(){st.step++;render();var f=fEl.querySelector('.f-opt,.f-next');if(f)f.focus()};
-  }else{
-    fEl.querySelector('[data-restart]').onclick=function(){st={step:0,needs:[],who:null,phase:null};render()};
-    document.getElementById('fGo').onclick=toSignup;
-  }
-}
-function toSignup(){
-  var all=st.needs.concat([st.who,st.phase]);
-  document.getElementById('pickedChips').innerHTML=all.map(function(c){return '<span>'+esc(c)+'</span>'}).join('');
-  document.getElementById('finderVal').value=all.join(' | ');
-  document.getElementById('picked').classList.add('on');
-  setAud(st.who==='Für einen Angehörigen'?1:0);
+/* No answer data is accepted from the isolated Finder. */
+var finderFrame=document.getElementById('finderFrame');
+addEventListener('message',function(event){
+  if(event.source!==finderFrame.contentWindow || event.origin!=='null' || event.data!=='hopeberries:open-signup')return;
   document.getElementById('vormerken').scrollIntoView({behavior:reduce?'auto':'smooth'});
-  setTimeout(function(){var f=document.getElementById('suForm');f.classList.remove('hl');void f.offsetWidth;f.classList.add('hl');document.getElementById('email').focus({preventScroll:true})},reduce?0:700);
-}
-render();
+  document.getElementById('email')?.focus({preventScroll:true});
+});
 
 /* count-up: zählt beim Hineinscrollen hoch, setzt beim Verlassen zurück */
 var running=new WeakMap();

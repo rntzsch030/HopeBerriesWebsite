@@ -17,6 +17,7 @@ export default async function handler(req, res) {
     try { body = JSON.parse(body); } catch { return res.status(400).json({ error: 'Ungültige Anfrage.' }); }
   }
   if (!body || typeof body !== 'object' || Array.isArray(body)) return res.status(400).json({ error: 'Ungültige Anfrage.' });
+  if (Object.keys(body).some(key => !['email', 'consent', 'website'].includes(key))) return res.status(400).json({ error: 'Ungültige Anfrage.' });
   if (body.website) return res.status(200).json({ ok: true });
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
   if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || body.consent !== true) return res.status(400).json({ error: 'E-Mail und Einwilligung erforderlich.' });

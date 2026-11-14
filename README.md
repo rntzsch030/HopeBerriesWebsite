@@ -32,8 +32,8 @@ Die ursprüngliche Gestaltung und die Medien der gelieferten HTML-Datei wurden �
   Vor dem tatsächlichen Versand einen E-Mail-Dienst und Bestätigungsablauf ergänzen.
 - Impressum und Datenschutz sind ausdrücklich Entwürfe: alle Platzhalter, Betreiberform,
   Kontaktadresse, Hosting-Verträge, Medienquellen und Löschfristen prüfen und vervollständigen.
-- Google Fonts werden wie in der Vorlage extern geladen. Vor Veröffentlichung lokal hosten
-  oder die Einbindung passend zur finalen Datenschutz-/Einwilligungslösung umsetzen.
+- Schriftarten werden lokal ausgeliefert; der Finder ist isoliert und verarbeitet Antworten ausschließlich im Browser.
+  Details und Prüfgrenzen: siehe `FINDER-DATENSCHUTZ.md`.
 - Löschung und späterer Versand werden derzeit manuell im Backend verwaltet.
 
 ## Prüfung
