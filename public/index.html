@@ -84,8 +84,8 @@ header.scrolled{border-color:var(--line)}
 .hbw-seg.active .hbw-back{opacity:1}
 .hbw-hub{transition:transform .4s ease;transform-box:view-box;pointer-events:none}
 .hbw.has-active .hbw-hub{transform:scale(.96)}
-.hbw-hit{fill:transparent;stroke:transparent;stroke-linejoin:round;pointer-events:all;cursor:pointer;outline:none}
-.hbw-hit:focus-visible{stroke:#A23F62;stroke-opacity:.0}
+.hbw-hit{touch-action:manipulation;fill:transparent;stroke:transparent;stroke-linejoin:round;pointer-events:all;cursor:pointer;outline:none}
+.hbw-hit:focus-visible{stroke:#A23F62;stroke-opacity:1;stroke-width:3px}
 .hbw-hit:focus-visible{fill:none}
 .hbw-focus .hbw-seg.active{outline:none}
 .wheel-hint{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:10px;font-size:14px;font-weight:600;color:var(--sage)}
@@ -687,7 +687,7 @@ addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onS
 (function(){
   var svg=document.getElementById('hb-wheel');if(!svg)return;
   var hits=[].slice.call(svg.querySelectorAll('.hbw-hit')),cur=null;
-  function seg(id){return svg.querySelector('.hbw-seg[data-id="'+id+'"]')}
+  var canHover=matchMedia('(hover: hover) and (pointer: fine)');
   function set(id){
     if(cur===id)return;cur=id;
     svg.querySelectorAll('.hbw-seg').forEach(function(s){s.classList.toggle('active',s.dataset.id===id)});
@@ -701,14 +701,13 @@ addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onS
   })}
   align();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(align);
   hits.forEach(function(h){
-    h.addEventListener('pointerenter',function(e){if(e.pointerType!=='touch')set(h.dataset.id)});
-    h.addEventListener('click',function(e){if(e.pointerType==='mouse')return;set(cur===h.dataset.id?null:h.dataset.id)});
-    h.addEventListener('focus',function(){if(h.matches(':focus-visible'))set(h.dataset.id)});
+    h.addEventListener('pointerenter',function(e){if(canHover.matches&&e.pointerType==='mouse')set(h.dataset.id)});
+    h.addEventListener('click',function(){set(cur===h.dataset.id?null:h.dataset.id)});
     h.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();set(cur===h.dataset.id?null:h.dataset.id)}});
     h.addEventListener('blur',function(){setTimeout(function(){if(!svg.contains(document.activeElement))set(null)},0)});
     h.addEventListener('keydown',function(e){if(e.key==='Escape'){set(null);h.blur()}});
   });
-  svg.querySelector('.hbw-hits').addEventListener('pointerleave',function(e){if(e.pointerType!=='touch')set(null)});
+  svg.addEventListener('pointerleave',function(e){if(canHover.matches&&e.pointerType==='mouse')set(null)});
   document.addEventListener('pointerdown',function(e){if(!svg.contains(e.target))set(null)});
 })();
 
