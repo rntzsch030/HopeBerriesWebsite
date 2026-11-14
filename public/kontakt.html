@@ -1,1 +1,38 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kontakt – HopeBerries</title><link rel="stylesheet" href="legal.css"></head><body><header><a class="brand" href="index.html">Hope<span>Berries</span></a><a href="index.html">Zur Startseite</a></header><main><h1>Kontakt</h1><p>Sie haben Fragen zu HopeBerries oder möchten als Pilotpartner mitwirken?</p><h2>Schreiben Sie uns</h2><p><a href="mailto:kontakt@hopeberries.de">kontakt@hopeberries.de</a></p><p class="notice">Die Erreichbarkeit dieser E-Mail-Adresse muss vom Betreiber vor Veröffentlichung bestätigt werden.</p><h2>Für Einrichtungen und Partner</h2><p>Für eine Anfrage zur Zusammenarbeit nutzen Sie bitte den Betreff „Pilotpartner HopeBerries“ und nennen Sie Ihre Einrichtung sowie eine Kontaktperson.</p><h2>Medizinische Fragen</h2><p>HopeBerries ersetzt keine ärztliche Beratung. Bitte wenden Sie sich bei Fragen zu Ihrer Behandlung an Ihr Behandlungsteam. Senden Sie uns bitte keine Befunde oder anderen sensiblen Gesundheitsdaten per E-Mail.</p><p><a href="index.html#vormerken">Zur einmaligen Startbenachrichtigung anmelden</a></p></main><footer><nav aria-label="Rechtliches"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="kontakt.html">Kontakt</a></nav></footer></body></html>
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kontakt – HopeBerries</title><link rel="stylesheet" href="fonts/fonts.css"><link rel="stylesheet" href="legal.css"></head><body><header><a class="brand" href="index.html" aria-label="HopeBerries Startseite">
+      <svg width="34" height="34" viewBox="0 0 48 48" aria-hidden="true" style="overflow:visible"><path d="M27.7 10.6c2.6-5.2 8.4-6.7 13-4.1-1.7 5.8-7 8.7-12.8 7.2" fill="#6D8E7C"/><path d="M26.6 14.1c.6-3.1 2.1-5.5 4.5-7.3" fill="none" stroke="#4F7462" stroke-width="2.4" stroke-linecap="round"/><circle cx="17" cy="18" r="7.8" fill="#A23F62"/><circle cx="27" cy="21" r="7.6" fill="#BA5A79"/><circle cx="20" cy="31" r="7.5" fill="#8F3556"/><path d="M18.2 18.4c1.8-2 4.4-2.8 6.7-1.7" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" opacity=".9"/></svg>
+      <span>Hope<b>Berries</b></span>
+    </a><a href="index.html">Zur Startseite</a></header><main><h1>Kontakt</h1><p>Sie haben Fragen zu HopeBerries oder möchten als Pilotpartner mitwirken?</p><h2>Schreiben Sie uns</h2><p><a href="mailto:kontakt@hopeberries.de">kontakt@hopeberries.de</a></p><p>Oder senden Sie uns Ihre Anfrage über das Kontaktformular. Pflichtfelder sind mit * gekennzeichnet.</p>
+<form class="contact-form" id="contactForm">
+<label for="contactName">Name <small>(optional)</small><input id="contactName" name="name" type="text" autocomplete="name" maxlength="120"></label>
+<label for="contactEmail">E-Mail-Adresse *<input id="contactEmail" name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<label for="contactSubject">Betreff <small>(optional)</small><input id="contactSubject" name="subject" type="text" maxlength="160"></label>
+<label for="contactMessage">Ihre Nachricht *<textarea id="contactMessage" name="message" rows="7" minlength="10" maxlength="5000" required aria-describedby="messageHint"></textarea></label>
+<p class="privacy-note" id="messageHint">Bitte senden Sie keine Befunde, Diagnosen oder anderen sensiblen Gesundheitsdaten. Für medizinische Fragen wenden Sie sich bitte an Ihr Behandlungsteam.</p>
+<div hidden aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+<p class="privacy-note">Wir verarbeiten Ihre Angaben zur Bearbeitung Ihrer Anfrage und speichern sie in Supabase. Das Formular übernimmt keine Finder-Antworten. Weitere Informationen stehen in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+<button type="submit">Nachricht senden</button>
+<p class="form-status" id="contactStatus" role="status" aria-live="polite"></p>
+<noscript><p>Bitte aktivieren Sie JavaScript oder schreiben Sie an <a href="mailto:kontakt@hopeberries.de">kontakt@hopeberries.de</a>.</p></noscript>
+</form><h2>Für Einrichtungen und Partner</h2><p>Für eine Anfrage zur Zusammenarbeit nutzen Sie bitte den Betreff „Pilotpartner HopeBerries“ und nennen Sie Ihre Einrichtung sowie eine Kontaktperson.</p><h2>Medizinische Fragen</h2><p>HopeBerries ersetzt keine ärztliche Beratung. Bitte wenden Sie sich bei Fragen zu Ihrer Behandlung an Ihr Behandlungsteam. Senden Sie uns bitte keine Befunde oder anderen sensiblen Gesundheitsdaten per E-Mail.</p><p><a href="index.html#vormerken">Zur einmaligen Startbenachrichtigung anmelden</a></p></main><footer><nav aria-label="Rechtliches"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="kontakt.html">Kontakt</a></nav></footer><script>
+(function(){
+  'use strict';
+  var form=document.getElementById('contactForm'),status=document.getElementById('contactStatus'),button=form.querySelector('[type="submit"]');
+  var requestId=null;
+  form.addEventListener('input',function(){requestId=null});
+  form.addEventListener('submit',async function(event){
+    event.preventDefault();
+    if(button.disabled||!form.reportValidity())return;
+    var fields=form.elements;
+    if(fields.message.value.trim().length<10){status.textContent='Bitte schreiben Sie eine Nachricht mit mindestens 10 Zeichen.';status.dataset.error='true';fields.message.focus();return}
+    if(!requestId)requestId=crypto.randomUUID();
+    var payload={id:requestId,name:fields.name.value.trim(),email:fields.email.value.trim(),subject:fields.subject.value.trim(),message:fields.message.value.trim(),website:fields.website.value};
+    button.disabled=true;status.dataset.error='false';status.textContent='Ihre Nachricht wird gesendet …';
+    try{
+      var response=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:AbortSignal.timeout(15000)});
+      if(!response.ok)throw new Error('request');
+      form.reset();requestId=null;status.textContent='Vielen Dank! Ihre Nachricht ist bei uns eingegangen. Wir antworten Ihnen per E-Mail.';
+    }catch(error){status.dataset.error='true';status.textContent='Ihre Nachricht konnte nicht bestätigt werden. Bitte versuchen Sie es erneut oder schreiben Sie an kontakt@hopeberries.de. Ihre Eingaben bleiben für einen erneuten Versuch erhalten.'}
+    finally{button.disabled=false}
+  });
+})();
+</script></body></html>

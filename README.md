@@ -46,3 +46,18 @@ Dokumentation:
 - https://supabase.com/docs/guides/getting-started/api-keys
 - https://supabase.com/docs/guides/database/row-level-security
 - https://vercel.com/docs/environment-variables
+
+
+## Kontaktformular
+
+`public/kontakt.html` sendet E-Mail und Nachricht sowie optional Name und Betreff an
+`api/contact.js`. Die Anfragen werden getrennt in `public.contact_messages` gespeichert.
+Die Tabellenvorlage steht in `supabase/contact.sql` und wurde im vorhandenen Projekt ausgeführt.
+RLS ist aktiv; öffentliche Rollen haben keinen Tabellenzugriff. Es gibt keine Übernahme aus dem Finder.
+
+Eingabelängen und Ursprünge werden serverseitig geprüft. Honeypot gegen einfache Bots;
+zusätzliches dauerhaftes Rate-Limiting kann über die Vercel-Firewall eingerichtet werden.
+Wiederholungen derselben Anfrage verwenden eine UUID und erzeugen keinen zweiten Datensatz.
+Keine Inhalte in Anwendungslogs oder Fehlermeldungen. Keine automatische E-Mail-Benachrichtigung:
+Anfragen derzeit im Supabase Table Editor lesen und per E-Mail beantworten.
+Löschung entsprechend den veröffentlichten Zweck- und Aufbewahrungsregeln manuell verwalten.
