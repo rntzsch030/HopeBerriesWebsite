@@ -59,6 +59,10 @@ Stand: 14. November 2026. Technische Umsetzung, keine Bescheinigung rechtlicher 
   Der Ressourcenkatalog ist kein vollständiger HAR-Mitschnitt aller Browserkommunikation.
   Eine vollständige unabhängige Netzwerkanalyse und Prüfung der produktiven Hosting-Einstellungen
   (einschließlich eventuell außerhalb des Repositorys injizierter Integrationen) bleibt erforderlich.
+- Live-Veröffentlichung auf www.hopeberries.de bestätigt: neuer Hinweis und Reset im Browser
+  getestet; Ressourceninventar enthält nur eigene Website-Adressen. Der ausgelieferte HTTP-Header
+  für finder.html enthält die erwartete CSP mit Netzwerksperre, Script-Hash und Sandbox sowie
+  no-referrer und no-store. Kein vollständiger produktiver HAR-Mitschnitt verfügbar.
 - Bereits in der gelieferten Vorlage referenzierte MP4-Dateien fehlen im Repository und liefern
   404. Kein Zusammenhang mit der Finder-Änderung; Mediendateien separat bereitstellen.
 
